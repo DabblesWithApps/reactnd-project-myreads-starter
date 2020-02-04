@@ -3,22 +3,35 @@ import { Link, Route } from 'react-router-dom'
 import * as BooksAPI from './BooksAPI'
 import './App.css'
 
-function Search() {
-  return (
-    <div className="search-books">
-      <div className="search-books-bar">
-        <Link to="/">
-          <button className="close-search">Close</button>
-        </Link>
-        <div className="search-books-input-wrapper">
-          <input type="text" placeholder="Search by title or author" />
+class Search extends React.Component {
+  state = {
+    search: '',
+    books: []
+  }
+  handleInput = (e) => {
+    const search = e.target.value
+    BooksAPI.search(search).then(books => this.setState({ books: Array.isArray(books) ? books : [] }))
+    this.setState({ search: search })
+  }
+  render() {
+    return (
+      <div className="search-books">
+        <div className="search-books-bar">
+          <Link to="/">
+            <button className="close-search">Close</button>
+          </Link>
+          <div className="search-books-input-wrapper">
+            <input onChange={this.handleInput} type="text" placeholder="Search by title or author" value={this.state.search} />
+          </div>
+        </div>
+        <div className="search-books-results">
+          <ol className="books-grid">
+            {this.state.books.map(book => <li key={book.id}><Book book={book} /></li>)}
+          </ol>
         </div>
       </div>
-      <div className="search-books-results">
-        <ol className="books-grid"></ol>
-      </div>
-    </div>
-  )
+    )
+  }
 }
 
 function Book(props) {
