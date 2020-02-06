@@ -10,12 +10,30 @@ class Search extends React.Component {
   }
   handleInput = (e) => {
     const search = e.target.value
-    BooksAPI.search(search).then(books => this.setState({ books: Array.isArray(books) ? books : [] }))
     this.setState({ search: search })
+    this.getBooks(search)
   }
+  getBooks = (search) => {
+    BooksAPI.search(search).then(books => {
+      if (Array.isArray(books)) {
+        this.setState({ books: this.setShelves(books) })
+      } else {
+        this.setState({ books: [] })
+      }
+    })
+  }
+  // sets shelves in search results by cross-referencing the shelves from our book case books
+  setShelves = (books) => books.map((book) => {
+    const b = this.props.bookCaseBooks.find(b => b.id === book.id)
+    const shelf = b ? b.shelf : 'none'
+    return {
+      ...book,
+      shelf: shelf
+    }
+  })
   render() {
     return (
-      <div className="search-books">
+      <div className="search-books" >
         <div className="search-books-bar">
           <Link to="/">
             <button className="close-search">Close</button>
@@ -127,7 +145,7 @@ class BooksApp extends React.Component {
     return (
       <div className="app">
         <Route exact path="/search">
-          <Search moveBook={this.moveBook} />
+          <Search bookCaseBooks={this.state.books} moveBook={this.moveBook} />
         </Route>
         <Route exact path="/">
           <BookCase books={this.state.books} moveBook={this.moveBook} />
