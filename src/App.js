@@ -16,6 +16,7 @@ class BooksApp extends React.Component {
   moveBook = (book, shelf) => {
     BooksAPI.update(book, shelf).then();
     if (shelf === 'none') {
+      // if we are setting the book's shelf to none, then remove it from our list of books
       this.setState({ books: this.state.books.filter(b => b.id !== book.id) })
     } else {
       // if the book is already in the book array, update its shelf
