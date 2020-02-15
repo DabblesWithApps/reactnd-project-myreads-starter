@@ -74,6 +74,10 @@ body, .app {
   text-align: center;
 }
 
+.no-books-content {
+  text-align: center;
+}
+
 .open-search {
   position: fixed;
   right: 25px;
