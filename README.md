@@ -1,3 +1,31 @@
+# My Reads
+
+## Info
+This project is based on a Udacity course and was created from a template/starter project that only contained static content.
+
+The objective of this project was to convert the static content from the starter project into a dynamic application. The dynamic application now allows users to search for books and add them to various shelves in their personal library. In addition to fulfilling the basic requirements, I added a CSS transition when switching between the library and search pages. I also added special messaging for when shelves or search results are empty and a button to clear the search input when there are no results.
+
+## Getting started
+
+To run the project do the following:
+
+1. install all project dependencies with `npm install`
+2. start the development server with `npm start`
+
+OR
+
+1. install all project dependencies with `yarn install`
+2. start the development server with `yarn start`
+
+## Special Thanks
+
+:pray: :pray: :pray: Thank you Udacity, Tyler McGinnis, and Eric Elliot :pray: :pray: :pray:
+
+I have been learning JS independently for a while now but your courses/tutorials/articles have given me a large and noticable skill boost!
+
+----
+Leaving previous README.md content below, because I want to give Udacity credit.
+
 # MyReads Project
 
 This is the starter template for the final assessment project for Udacity's React Fundamentals course. The goal of this template is to save you time by providing a static example of the CSS and HTML markup that may be used, but without any of the React code that is needed to complete the project. If you choose to start with this template, your job will be to add interactivity to the app by refactoring the static code in this template.
