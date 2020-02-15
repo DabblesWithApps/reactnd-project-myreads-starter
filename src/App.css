@@ -10,6 +10,33 @@ body, .app {
   background: white;
 }
 
+.list-books {
+  position: absolute;
+  width: 100%;
+}
+
+.search-books {
+  position: absolute;
+  width: 100%;
+}
+
+.activity-page-enter {
+  opacity: 0;
+}
+.activity-page-enter-active {
+  transition: transform 1000ms, opacity 1000ms;
+  opacity: 1;
+}
+
+.activity-page-exit {
+  opacity: 1;
+}
+.activity-page-exit-active {
+  transition: transform 1000ms, opacity 1000ms;
+  opacity: 0;
+}
+
+
 /* main page */
 
 .list-books-title {

@@ -1,5 +1,6 @@
 import React from 'react'
-import { Link, Route } from 'react-router-dom'
+import { Link, Route, Switch } from 'react-router-dom'
+import { TransitionGroup, CSSTransition } from 'react-transition-group'
 import * as BooksAPI from './BooksAPI'
 import './App.css'
 
@@ -16,7 +17,8 @@ class Search extends React.Component {
   getBooks = (search) => {
     BooksAPI.search(search).then(books => {
       if (Array.isArray(books)) {
-        this.setState({ books: this.setShelves(books) })
+        const booksWithShelvingData = this.setShelves(books)
+        this.setState({ books: booksWithShelvingData })
       } else {
         this.setState({ books: [] })
       }
@@ -129,28 +131,49 @@ class BooksApp extends React.Component {
   }
   moveBook = (book, shelf) => {
     BooksAPI.update(book, shelf).then();
+    if (shelf === 'none') {
+      this.setState({ books: this.state.books.filter(b => b.id !== book.id) })
+    } else {
+      // if the book is already in the book array, update its shelf
+      // otherwise, add it to the array with its updated shelf
+      const books = this.state.books.some(b => b.id === book.id) ?
+        this.state.books.map(b => {
+          b.id === book.id && (b.shelf = shelf)
+          return b;
+        }) :
+        this.state.books.concat([{ ...book, shelf: shelf }])
 
-    // if the book is already in the book array, update its shelf
-    // otherwise, add it to the array with its updated shelf
-    const books = this.state.books.some(b => b.id === book.id) ?
-      this.state.books.map(b => {
-        b.id === book.id && (b.shelf = shelf)
-        return b;
-      }) :
-      this.state.books.concat([{ ...book, shelf: shelf }])
-
-    this.setState({ books: books })
+      this.setState({ books: books })
+    }
   }
   render() {
     return (
       <div className="app">
-        <Route exact path="/search">
-          <Search bookCaseBooks={this.state.books} moveBook={this.moveBook} />
-        </Route>
-        <Route exact path="/">
-          <BookCase books={this.state.books} moveBook={this.moveBook} />
-        </Route>
-      </div>
+        <Route render={({ location }) => (
+          <TransitionGroup>
+            <CSSTransition
+              key={location.key}
+              timeout={1000}
+              classNames="activity-page"
+            >
+              <Switch location={location}>
+                <Route exact path="/search" render={() => (
+                  <Search
+                    bookCaseBooks={this.state.books}
+                    moveBook={this.moveBook}
+                  />
+                )} />
+                <Route exact path="/" render={() => (
+                  <BookCase
+                    books={this.state.books}
+                    moveBook={this.moveBook}
+                  />
+                )} />
+              </Switch>
+            </CSSTransition>
+          </TransitionGroup>
+        )} />
+      </div >
     )
   }
 }
